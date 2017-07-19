@@ -29,7 +29,8 @@ apt-get autoclean
 ARG BUILD_PRINTING="no"
 RUN if [ "$BUILD_PRINTING" = "yes" ] ; then  apt-get install -y cups-client cups-bsd ; fi ;
 ARG BUILD_LATEX="no"
-RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils dblatex latex-make ; fi ;
+RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils texlive-base ; fi ;
+#RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils dblatex latex-make ; fi ;
 ARG BUILD_MYSQLCLI="no"
 RUN if [ "$BUILD_MYSQLCLI" = "yes" ] ; then  apt-get install -y mysql-client ; fi ;
 
@@ -72,17 +73,9 @@ RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 ADD ./index.php /usr/share/nginx/html/index.php
 RUN chown -Rf www-data.www-data /usr/share/nginx/html/
 
-
-
-
-
-# Supervisor Config
-ADD ./supervisord.conf /etc/supervisord.conf
-
 # Start Supervisord
 ADD ./start.sh /start.sh
 RUN chmod 755 /start.sh
-
 
 #
 # establisch supervisord
