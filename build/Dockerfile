@@ -22,17 +22,23 @@ apt-get -y install php5-mysqlnd && \
 apt-get -y install php5-curl && \
 apt-get -y install php-mail && \
 apt-get -y install php5-json && \
-apt-get -y install phpunit && \
-apt-get clean && \
-apt-get autoclean
+apt-get -y install phpunit
+
 
 ARG BUILD_PRINTING="no"
 RUN if [ "$BUILD_PRINTING" = "yes" ] ; then  apt-get install -y cups-client cups-bsd ; fi ;
 ARG BUILD_LATEX="no"
-RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils texlive-base ; fi ;
-#RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils dblatex latex-make ; fi ;
+#RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils dblatex latex-make texlive-lang-german ; fi ;
+RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils texlive-base texlive-lang-german texlive-latex-extra ; fi ;
 ARG BUILD_MYSQLCLI="no"
 RUN if [ "$BUILD_MYSQLCLI" = "yes" ] ; then  apt-get install -y mysql-client ; fi ;
+
+
+RUN apt-get --purge remove -y tex.\*-doc$ cpp cpp-4.9
+
+RUN apt-get clean && apt-get -y autoremove  && rm -rf /var/lib/apt/lists/*
+
+RUN rm -rf /usr/share/doc-base /usr/shre/doc /usr/share/man
 
 
 RUN touch /var/log/cron.log
