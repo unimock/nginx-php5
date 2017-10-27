@@ -22,7 +22,9 @@ apt-get -y install php5-mysqlnd && \
 apt-get -y install php5-curl && \
 apt-get -y install php-mail && \
 apt-get -y install php5-json && \
-apt-get -y install phpunit
+apt-get -y install phpunit && \
+apt-get -y install sendemail
+
 
 
 ARG BUILD_PRINTING="no"
