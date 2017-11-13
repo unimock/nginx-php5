@@ -1,3 +1,5 @@
 persistent/
 service/
+data/
 docker-compose.yml
+dc-service.yml
