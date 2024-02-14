@@ -1,5 +1,11 @@
 FROM debian:jessie
 
+RUN rm /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list.d/jessie.list
+RUN echo "deb http://archive.debian.org/debian jessie main" >> /etc/apt/sources.list.d/jessie.list
+
+
+
 # Let the container know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -11,29 +17,30 @@ RUN echo "$BUILD_TZ" > /etc/timezone && \
 
 # install packages
 RUN apt-get update && \
-apt-get -y install rsync nano cron && \
-apt-get -y install supervisor && \
-apt-get -y install nginx && \
-apt-get -y install php5-fpm && \
-apt-get -y install php5-mysql && \
-apt-get -y install php5-mcrypt && \
-apt-get -y install php5-xdebug && \
-apt-get -y install php5-mysqlnd && \
-apt-get -y install php5-curl && \
-apt-get -y install php-mail && \
-apt-get -y install php5-json && \
-apt-get -y install phpunit && \
-apt-get -y install sendemail
-
+apt-get --force-yes -y install rsync nano cron && \
+apt-get --force-yes -y install supervisor && \
+apt-get --force-yes -y install nginx && \
+apt-get --force-yes -y install php5-fpm && \
+apt-get --force-yes -y install php5-mysql && \
+apt-get --force-yes -y install php5-mcrypt && \
+apt-get --force-yes -y install php5-xdebug && \
+apt-get --force-yes -y install php5-mysqlnd && \
+apt-get --force-yes -y install php5-curl && \
+apt-get --force-yes -y install php-mail && \
+apt-get --force-yes -y install php5-json && \
+apt-get --force-yes -y install phpunit && \
+apt-get --force-yes -y install sendemail && \
+apt-get --force-yes -y install openssh-server && \
+apt-get --force-yes -y install openssh-client
 
 
 ARG BUILD_PRINTING="no"
-RUN if [ "$BUILD_PRINTING" = "yes" ] ; then  apt-get install -y cups-client cups-bsd ; fi ;
+RUN if [ "$BUILD_PRINTING" = "yes" ] ; then  apt-get --force-yes install -y cups-client cups-bsd ; fi ;
 ARG BUILD_LATEX="no"
 #RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils dblatex latex-make texlive-lang-german ; fi ;
-RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get install -y libdmtx-utils texlive-base texlive-lang-german texlive-latex-extra ; fi ;
+RUN if [ "$BUILD_LATEX" = "yes" ] ;    then  apt-get --force-yes install -y libdmtx-utils texlive-base texlive-lang-german texlive-latex-extra ; fi ;
 ARG BUILD_MYSQLCLI="no"
-RUN if [ "$BUILD_MYSQLCLI" = "yes" ] ; then  apt-get install -y mysql-client ; fi ;
+RUN if [ "$BUILD_MYSQLCLI" = "yes" ] ; then  apt-get --force-yes install -y mysql-client ; fi ;
 
 
 RUN apt-get --purge remove -y tex.\*-doc$ cpp cpp-4.9
